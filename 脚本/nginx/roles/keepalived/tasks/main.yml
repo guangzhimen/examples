@@ -1,0 +1,19 @@
+        - name: keepalived copy
+          copy: src=/etc/ansible/nginx/files/keepalived-axon.tar.gz dest=/apps/usr backup=yes
+        - name: keepalived tar
+          shell: tar -zxvf /apps/usr/keepalived-axon.tar.gz -C /apps/usr
+        - name: firewall
+          shell: firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 --in-interface ens160 --destination 224.0.0.0/8 --protocol vrrp -j ACCEPT
+        - shell: firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 --out-interface ens160 --destination 224.0.0.0/8 --protocol vrrp -j ACCEPT
+        - name: firewall save
+          shell: firewall-cmd --reload
+        - name: cp keepalived
+          shell: bash /apps/usr/keepalived/service.sh
+        - name: copy keepalived.conf master
+          copy: src=/etc/ansible/nginx/files/keepalived.conf.master dest=/apps/usr/keepalived/etc/keepalived/keepalived.conf backup=yes
+          when: "'{{ ansible_default_ipv4.address }}' == '{{ ip1 }}'"         
+        - name: copy keepalived.conf slave
+          copy: src=/etc/ansible/nginx/files/keepalived.conf.slave dest=/apps/usr/keepalived/etc/keepalived/keepalived.conf backup=yes
+          when: "'{{ ansible_default_ipv4.address }}' == '{{ ip2 }}'"
+        - name: keepalived restart
+          service: name=keepalived.service state=restarted enabled=yes

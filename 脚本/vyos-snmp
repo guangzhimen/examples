@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+set ip [lindex $argv 0]
+spawn ssh vyos@$ip
+expect "*password："
+send "axon@234\n"
+expect "vyos@vyos:~$"
+send "configure\n"
+expect "vyos@vyos#"
+send "set service snmp community axon@234 authorization ro\n"
+expect "vyos@vyos#"
+send "commit\n"
+expect "vyos@vyos#"
+send "save\n"
+expect "vyos@vyos#"
+send "exit\n"
+expect "vyos@vyos:~$"
+send "exit\n"
+exit

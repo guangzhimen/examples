@@ -1,0 +1,11 @@
+        - name: lsync file copy
+          copy: src=/etc/ansible/nginx/files/lsync-axon.tar.gz dest=/apps/usr backup=yes
+        - name: tar lsync file
+          shell: tar -zxvf /apps/usr/lsync-axon.tar.gz -C /apps/usr
+        - name: lsync.conf file copy
+          copy: src=/etc/ansible/nginx/files/lsync.conf dest=/apps/usr/lsync/conf/ backup=yes
+        - name: start lsync program
+          shell: /apps/usr/lsync/bin/lsyncd /apps/usr/lsync/conf/lsync.conf
+        - name: boot start lsync
+          shell: echo '/apps/usr/lsync/bin/lsyncd /apps/usr/lsync/conf/lsync.conf' >> /etc/rc.d/rc.local
+        - file: path=/etc/rc.d/rc.local mode=755

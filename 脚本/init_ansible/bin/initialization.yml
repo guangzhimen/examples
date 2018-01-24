@@ -1,0 +1,24 @@
+- name: initialization
+  hosts: "{{ host }}"
+  remote_user: root
+  tasks:
+        - name: zabbix and ntp initialization
+          shell: sed -i '/^Server=/c Server={{ zabbix }}' /apps/usr/zabbix/etc/zabbix_agentd.conf
+        - shell: sed -i '/^ServerActive=/c ServerActive={{ zabbix }}' /apps/usr/zabbix/etc/zabbix_agentd.conf
+        - shell: sed -i '/10.10.10.10/d' /var/spool/cron/root
+        - shell: sed -i '/{{ ntp }}/d' /var/spool/cron/root
+        - shell: echo '0 1 * * * ( /usr/sbin/ntpdate {{ ntp }}  > /dev/null 2>&1; /usr/sbin/hwclock --systohc)' >> /var/spool/cron/root
+        - shell: sleep 1
+        - shell: ntpdate {{ ntp }} > /dev/null
+        - shell: firewall-cmd --zone=public --add-port=10050/tcp --permanent
+        - shell: firewall-cmd --reload
+        - name: zabbix boot
+          copy: src=/etc/ansible/playbook/systeminfo/conf/zabbix.service dest=/lib/systemd/system backup=yes
+        - shell: service=zabbix.service state=restarted enabled=yes 
+        - name: ssh speed optimization
+          shell: sed -i '/^#UseDNS/c UseDNS no' /etc/ssh/sshd_config
+        - name : ssh restart
+          shell: service=sshd.service state=restarted enabled=yes
+        - name: disable ipv6
+          shell: echo 1 >/proc/sys/net/ipv6/conf/all/disable_ipv6
+        - shell: echo 1 >/proc/sys/net/ipv6/conf/default/disable_ipv6

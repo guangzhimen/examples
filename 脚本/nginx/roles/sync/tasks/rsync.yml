@@ -1,0 +1,17 @@
+        - name: rsync file copy
+          copy: src=/etc/ansible/nginx/files/rsync-axon.tar.gz dest=/apps/usr backup=yes
+        - name: tar rsync file
+          shell: tar -zxvf /apps/usr/rsync-axon.tar.gz -C /apps/usr
+        - name: firewall configuration
+          shell: firewall-cmd --zone=public --add-port=873/tcp --permanent
+        - shell: firewall-cmd --reload
+        - name: rsyncd.conf file copy
+          copy: src=/etc/ansible/nginx/files/rsyncd.conf dest=/apps/usr/rsync/etc/ backup=yes
+        - name: delete rsync PID file
+          file: path=/apps/usr/rsync/{{ PID }} state=absent
+          when: PID == "rsyncd.pid"
+        - name: start rsync program
+          shell: /apps/usr/rsync/bin/rsync --config=/apps/usr/rsync/etc/rsyncd.conf --daemon
+        - name: boot start lsync
+          shell: echo '/apps/usr/rsync/bin/rsync --config=/apps/usr/rsync/etc/rsyncd.conf --daemon' >> /etc/rc.d/rc.local
+        - file: path=/etc/rc.d/rc.local mode=755

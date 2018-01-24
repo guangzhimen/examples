@@ -1,0 +1,4 @@
+        - include: lsync.yml
+          when: "'{{ ansible_default_ipv4.address }}' == '{{ ip1 }}'" 
+        - include: rsync.yml
+          when: "'{{ ansible_default_ipv4.address }}' == '{{ ip2 }}'"

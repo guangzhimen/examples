@@ -1,0 +1,17 @@
+        - name: nginx copy
+          copy: src=/etc/ansible/nginx/files/nginx-axon.tar.gz dest=/apps/usr backup=yes
+        - name: nginx tar
+          shell: tar -zxvf /apps/usr/nginx-axon.tar.gz -C /apps/usr
+        - name: firewall
+          shell: firewall-cmd --zone=public --add-port=80/tcp --permanent
+        - name: firewall save
+          shell: firewall-cmd --reload
+        - name: copy nginx.conf
+          copy: src=/etc/ansible/nginx/files/nginx.conf dest=/apps/usr/nginx/conf/nginx.conf backup=yes
+        - name: chmod nginx
+          file: path=/apps/usr/nginx/sbin mode=0755
+        - name: cp nginx boot file
+          shell: bash /apps/usr/nginx/service.sh
+        - name: nginx start and boot entry
+          service: name=nginx.service state=started enabled=yes
+

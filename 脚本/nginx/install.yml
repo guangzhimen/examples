@@ -1,0 +1,13 @@
+- hosts: nginx
+  remote_user: root
+  vars_prompt:
+   - name: "ip1"
+     prompt: "please input master ip"
+     private: no
+   - name: "ip2"
+     prompt: "please input slave ip"
+     private: no
+  roles:
+   - role: nginx
+   - role: keepalived
+   - role: sync

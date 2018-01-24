@@ -1,0 +1,67 @@
+#!/usr/bin/expect
+set timeout 5
+set user [lindex $argv 1]
+set var [lindex $argv 0]
+proc add_user {user} {
+	spawn ssh vyos@10.10.141.245
+        set timeout 10
+	expect "vyos@10.10.141.245's password:"
+	send "axon@234\n"
+        set timeout 10
+	expect "vyos@vyos:~$ "
+	send "sudo -i\n"
+        set timeout 10
+	expect "root@vyos:~#"
+	send "echo $user >> /etc/openvpn/psw-file\n"
+	expect "root@vyos:~#"
+	send "exit\n"
+	expect "vyos@vyos:~$ "
+	send "exit\n"
+}
+
+proc del_user {user} {
+	spawn ssh vyos@10.10.141.245
+        set timeout 10
+	expect "vyos@10.10.141.245's password:"
+	send "axon@234\n"
+        set timeout 10
+	expect "vyos@vyos:~$ "
+	send "sudo -i\n"
+        set timeout 10
+	expect "root@vyos:~#"
+	send "sed -i '/$user/d' /etc/openvpn/psw-file\n"
+	expect "root@vyos:~#"
+	send "exit\n"
+	expect "vyos@vyos:~$ "
+	send "exit\n"
+}
+
+proc show_user {} {
+        spawn ssh vyos@10.10.141.245
+        set timeout 20
+        expect "vyos@10.10.141.245's password:"
+        send "axon@234\n"
+        set timeout 20
+        expect "vyos@vyos:~$ "
+        send "sudo -i\n"
+        set timeout 20
+        expect "root@vyos:~#"
+        send "cat /etc/openvpn/psw-file\n"
+        set timeout 20
+        expect "root@vyos:~#"
+        send "exit\n"
+        set timeout 20
+        expect "vyos@vyos:~$ "
+        send "exit\n"
+}
+if { $var == "--add" } {
+	add_user $user
+}
+if { $var == "--del" } {
+	del_user $user
+}
+if { $var == "--show" } {
+        show_user
+}
+exit
+interact

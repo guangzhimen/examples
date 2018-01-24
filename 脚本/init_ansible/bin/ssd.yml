@@ -1,0 +1,16 @@
+- name: mount ssd
+  hosts: "{{ host }}"
+  remote_user: root
+  tasks:
+        - name: create file directory
+          shell: mkdir -p /ssd
+        - name: Hard disk partition 
+          shell: echo -e 'n\np\n1\n\n\nw\n' | fdisk /dev/{{ disk }}
+        - name: Hard disk format
+          shell: mkfs -t ext4 /dev/{{ disk }}
+        - name: Getting ssd disk uuid and write fstab file
+          shell: uuid=`blkid |grep \/dev\/sdb1 |awk '{print $2}'` && echo "$uuid  /ssd   defaults  0 0" >> /etc/fstab
+        - name: Fstab file formatting
+          shell: sed -i 's/\"//g' /etc/fstab
+        - name: Mount ssd disk
+          shell: mount -a
