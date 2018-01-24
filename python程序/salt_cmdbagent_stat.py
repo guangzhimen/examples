@@ -11,12 +11,12 @@ sys.setdefaultencoding( "utf-8" )
 
 #smtp发送邮件模块
 def mail(cmdb, salt, cmdbwin, saltwin):
-    sender = 'liyj@axon.com.cn'
-    receiver = 'yunwei@axon.com.cn'
+    sender = 'xxxxx'
+    receiver = 'xxxxx'
     subject = 'CMDB客户端状态监控'
     smtpserver = 'smtp.qiye.163.com'
-    username = 'liyj@axon.com.cn'
-    password = 'guangzhimen310YU'
+    username = 'xxxxx'
+    password = 'xxxxx'
     
     message = 'Linux服务器：\nCMDB Agent 失去连接：\n%(cmdb)s\nSalt Agent 失去连接：\n%(salt)s\n\n \
 Windows服务器：\nCMDB Agent 失去连接：\n%(cmdbwin)s\nSalt Agent 失去连接：\n%(saltwin)s\n' % \
