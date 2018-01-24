@@ -50,6 +50,6 @@ def salt_ipmi_console(city, proxy, ip, user, passwd):
             print stdout
 
 if __name__ == "__main__":
-    data = ipmiconnt('192.168.3.55', 'api', 'axon@234', 'cmdb', sys.argv[2])
+    data = ipmiconnt('192.168.1.1', 'mydb', '123456', 'cmdb', sys.argv[2])
     print data
     salt_ipmi_console(sys.argv[1], sys.argv[2], data[2], data[0], data[1])
