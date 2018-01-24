@@ -2,11 +2,11 @@
 set ip [lindex $argv 0]
 spawn ssh vyos@$ip
 expect "*password："
-send "axon@234\n"
+send "xxx\n"
 expect "vyos@vyos:~$"
 send "configure\n"
 expect "vyos@vyos#"
-send "set service snmp community axon@234 authorization ro\n"
+send "set service snmp community xxxx authorization ro\n"
 expect "vyos@vyos#"
 send "commit\n"
 expect "vyos@vyos#"
