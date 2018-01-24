@@ -6,7 +6,7 @@ proc add_user {user} {
 	spawn ssh vyos@10.10.141.245
         set timeout 10
 	expect "vyos@10.10.141.245's password:"
-	send "axon@234\n"
+	send "xxxxx\n"
         set timeout 10
 	expect "vyos@vyos:~$ "
 	send "sudo -i\n"
@@ -23,7 +23,7 @@ proc del_user {user} {
 	spawn ssh vyos@10.10.141.245
         set timeout 10
 	expect "vyos@10.10.141.245's password:"
-	send "axon@234\n"
+	send "xxxx\n"
         set timeout 10
 	expect "vyos@vyos:~$ "
 	send "sudo -i\n"
@@ -40,7 +40,7 @@ proc show_user {} {
         spawn ssh vyos@10.10.141.245
         set timeout 20
         expect "vyos@10.10.141.245's password:"
-        send "axon@234\n"
+        send "xxxx\n"
         set timeout 20
         expect "vyos@vyos:~$ "
         send "sudo -i\n"
