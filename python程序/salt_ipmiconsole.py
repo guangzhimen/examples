@@ -33,7 +33,7 @@ def ipmiconnt(server, user, passwd, database, ip):
         return ipmidata
 
 def salt_ipmi_console(city, proxy, ip, user, passwd):
-    db = MySQLdb.connect('192.168.3.55', 'api', 'axon@234', 'cmdb', charset='utf8')
+    db = MySQLdb.connect('192.168.1.1', 'mydb', '123456', 'cmdb', charset='utf8')
     cursor = db.cursor()
     cursor.execute("select DeviceClass from cmdb.cc_HostBase where InnerIP='%s'" % proxy)
     Device = cursor.fetchone()
