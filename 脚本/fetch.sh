@@ -7,7 +7,7 @@ ansible jiangsu-idc -m shell -a "rm -rf /root/info.txt" >/dev/null
 info
 disk_volume=`cat /root/info.txt | sed 's/\%/ /g'| awk -F, '{if($2>=85){print $2}}' | wc -l`
 es_stat=`cat /root/info.txt |tail -1`
-mail_user=yunwei@axon.com.cn
+mail_user=yunwei@xxxxx
         if [ $es_stat == "red" ]; then
                 echo "elasticsearch stat is RED ERROR!" | mail -s "elasticsearch集群状态红色告警，请处理！" $mail_user
                 echo "`date +'%Y%m%d-%T'` elasticsearch stat is RED ERROR!" >> /root/es_disk.log
